@@ -160,8 +160,10 @@ def T1_tunnel(p2, us):
 
 def calculo():
     print('INPUT:')
-    p2 = float(input('p2 (kPa): '))
-    us = float(input('us (m/s): '))
+    # p2 = float(input('p2 (kPa): '))
+    p2 = st.number_input()
+    # us = float(input('us (m/s): '))
+    us = st.number_input()
     S1, S2, S5 = T1_tunnel(p2*1e3, us)
     S = np.array([S1, S2, S5])
     S = S.T
