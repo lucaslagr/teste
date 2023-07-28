@@ -1,0 +1,181 @@
+import numpy as np
+import pandas as pd
+import streamlit as st
+
+st.title('Estimativa de p1')
+
+def coeff_c(Y,Z):
+    """C Coefficients"""
+    if Y > -0.50:
+        if Z <= 0.30:
+            c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11 =     1.4,        0,         0,         0,          0,        0,        0,          0,   0,  0,  0
+        elif 0.30 < Z <= 1.15:
+            c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11 = 1.42598, 0.000918,  -0.092209, -0.002226,  0.019772,  -0.0366, -0.077469,  0.043878, -15, -1, -1.04
+        elif 1.15 < Z <= 1.60:
+            c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11 = 1.64689, -0.062155, -0.334994,  0.063612, -0.038332, -0.014468, 0.073421, -0.002442, -15, -1, -1.36
+        elif Z > 1.60:
+            c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11 = 1.48558, -0.453562, -0.152096,   0.30335, -0.459282,  0.448395, 0.220546, -0.292293, -10, -1, -1.60
+
+    elif -4.50 < Y <= -0.50:
+        if Z <= 0.30:
+            c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11 =     1.4,        0,         0,         0,          0,        0,          0,        0,    0,     0,    0
+        elif 0.30 < Z <= 0.98:
+            c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11 = 1.42176, -0.000366, -0.083614,  0.000675,  0.005272, -0.115853, -0.007363,  0.146179, -20,    -1, -0.86
+        elif 0.98 < Z <= 1.38:
+            c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11 = 1.74436, -0.035354, -0.415045,  0.061921,  0.018536,  0.043582,  0.044353,  -0.04975, -20, -1.04, -1.336
+        elif 1.38 < Z <= 2.04:
+            c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11 = 1.49674, -0.021583, -0.197008,  0.030886, -0.157738, -0.009158,  0.123213, -0.006553, -10, -1.05, -1.895
+        elif Z > 2.04:
+            c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11 = 1.10421, -0.033664,  0.031768, 0.0024335, -0.178802, -0.017456,  0.080373,  0.002511, -15, -1.08, -2.650
+
+    elif -7 <= Y <= -4.5:
+        if Z <= 0.398:
+            c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11 =     1.4,         0,         0,         0,         0,         0,         0,        0,   0,  0,      0
+        elif 0.398 < Z <= 0.87:
+            c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11 = 1.47003,  0.007939, -0.244205, -0.025607,  0.872248,  0.049452, -0.764158, 0.000147, -20, -1, -0.742
+        elif 0.87 < Z <= 1.27:
+            c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11 = 3.18652,  0.137930,  -1.89529, -0.103490,  -2.14572, -0.272717,   2.06586, 0.223046, -15, -1, -1.041
+        elif 1.27 < Z <= 1.863:
+            c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11 = 1.63963, -0.001004, -0.303549,  0.016464, -0.852169, -0.101237,  0.503123, 0.043580, -10, -1, -1.544
+        elif Z > 1.863:
+            c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11 = 1.55889,  0.055932, -0.211764, -0.023548, -0.549041, -0.101758,  0.276732, 0.046031, -15, -1, -2.250
+
+    return c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11
+
+def coeff_d(Y,Z):
+    """D Coefficients"""
+    if Y > -0.50:
+        #if 0.48 < Z <= 0.90:
+        if Z <= 0.90:
+            d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12 =  0.27407,         0, 1.00082,        0,         0,       0,        0,       0,         0,         0,   0,   0
+        elif Z > 0.90:
+            d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12 = 0.235869, -0.043304, 1.17619, 0.046498, -0.143721, -1.3767, 0.160465, 1.08988, -0.083489, -0.217748, -10, -1.78
+
+    elif -4.50 < Y <= -0.50:
+        #if 0.48 < Z <= 0.9165:
+        if Z <= 0.9165:
+            d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12 = 0.281611,  0.001267, 0.990406,         0, 0,         0,         0,        0,        0, 0,   0,   0
+        elif 0.9165 < Z <= 1.478:
+            d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12 = 0.457643, -0.034272, 0.819119,  0.046471, 0, -0.073233, -0.169816, 0.043264, 0.111854, 0, -15, -1.28
+        elif 1.478 < Z <= 2.176:
+            d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12 =  1.04172,  0.041961, 0.412752, -0.009329, 0, -0.434074, -0.196914, 0.264883, 0.100599, 0, -15, -1.778
+        elif Z > 2.176:
+            d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12 = 0.418298,   -0.2521, 0.784048,  0.144576, 0,  -2.00015, -0.639022, 0.716053, 0.206457, 0, -10, -2.4
+
+    elif -7 <= Y <= -4.5:
+        #if 0.30 < Z <= 1.07:
+        if Z <= 1.07:
+            d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12 = 2.72964,  0.003725, 0.938851,  -0.01192, 0, 0.682406, 0.089153, -0.646541, -0.070769, 0, -20, -0.82
+        elif 1.07 < Z <= 1.57:
+            d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12 = 2.50246, -0.042827,  1.12924,  0.041517, 0,  1.72067, 0.268008,  -1.25038, -0.179711, 0, -20, -1.33
+        elif 1.57 < Z <= 2.24:
+            d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12 = 2.44531, -0.047722,  1.00488,  0.034349, 0,  1.95893, 0.316244,   -1.0120, -0.151561, 0, -20, -1.88
+        elif Z > 2.24:
+            d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12 = 2.50342,  0.026825, 0.838860, -0.009819, 0,  3.58284, 0.533853,  -1.36147, -0.195436, 0, -20, -2.47
+
+    return d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12
+
+def T1_tunnel(p2, us):
+    # undisturbed air (state 1)
+    T1 = 300
+    R1 = 287
+    gam1 = 1.4
+    p1 = 0
+    a1 = np.sqrt(gam1 * R1 * T1)
+    Ms = us / a1
+
+    # shocked condition (state 1 -> state 2)
+    ki = .1   # k = ro1/ro2
+    err = 1
+    conv = 0.0001
+    while err > conv:
+        u2 = us*(1-ki)
+        ro1 = p2/(R1*T1+us**2*(1-ki))
+        ro2 = ro1/ki
+        p1 = ro1*R1*T1
+        cp1 = R1*gam1/(gam1-1)
+        h1 = cp1*T1
+        h2 = h1+us**2/2-(us-u2)**2/2
+        Y = np.log10(ro2 / 1.292)
+        X = np.log10(p2 / 1.013e5)
+        Z = X - Y
+        c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11 = coeff_c(Y, Z)  # function to get Tannehil 'c' coefficients
+        gam2 = c1 + c2 * Y + c3 * Z + c4 * Y * Z + (c5 + c6 * Y + c7 * Z + c8 * Y * Z) / (
+                1 + np.exp(c9 * (X + c10 * Y + c11)))
+        ro2 = p2 * (gam2 / (gam2 - 1)) / h2
+        ki_n = ro1/ro2
+        err = np.abs(ki - ki_n)
+        ki = ki_n
+    Yt = np.log10(ro2 / 1.225)
+    Xt = np.log10(p2 / 1.0134e5)
+    Zt = Xt - Yt
+    d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12 = coeff_d(Yt, Zt)  # function to get Tannehil 'd' coefficients
+    T2 = 151.78 * 10 ** (d1 + d2 * Yt + d3 * Zt + d4 * Yt * Zt + d5 * Zt ** 2 + (  # Tannehil temperature expression
+            d6 + d7 * Yt + d8 * Zt + d9 * Yt * Zt + d10 * Zt ** 2) / (1 + np.exp(d11 * (Zt + d12))))
+    u2 = us - ro1 * us / ro2  # shocked speed (m/s)
+    R2 = p2 / (ro2 * T2)  # R constant for air in shocked condition (J/kgK)
+    a2 = np.sqrt(gam2 * R2 * T2)  # speed of sound in shocked condition (m/s)
+    M2 = u2 / a2  # shocked Mach number
+
+    # REFLECTED CONDITION (2 -> 5)
+    ro5 = 10 * ro2  # reflected density initial guess (kg/m³)
+    kr = ro5 / ro2  # first 5-2 density ratio
+    ur = ro2 * u2 / (ro5 - ro2)  # reflected speed first approximation (m/s)
+    p5 = p2 + ro5 * ur ** 2 * (kr - 1)  # shocked pressure first approximation (Pa)
+    h5 = h2 + 0.5 * ur ** 2 * (kr ** 2 - 1)  # shocked enthalpy first approximation (J/kg)
+
+    # Tannehill-Mugge methodology (for 2-5)
+    err_ = 1  # initial error to enter in loop
+    conv_ = 0.0001  # convergence criteria
+    while err_ > conv_:
+        Y_ = np.log10(ro5 / 1.292)
+        X_ = np.log10(p5 / 1.013e5)
+        Z_ = X_ - Y_
+        c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11 = coeff_c(Y_, Z_)  # function to get Tannehill 'c' coefficients
+        gam5 = c1 + c2 * Y_ + c3 * Z_ + c4 * Y_ * Z_ + (c5 + c6 * Y_ + c7 * Z_ + c8 * Y_ * Z_) / (
+                1 + np.exp(c9 * (X_ + c10 * Y_ + c11)))  # Tannehil gamma expression
+        ro5 = p5 * (gam5 / (gam5 - 1)) / h5  # new shocked density (kg/m³)
+        kr_new = ro5 / ro2  # new density ratio
+        ur = ro2 * u2 / (ro5 - ro2)  # new reflected speed (m/s)
+        p5 = p2 + ro5 * ur ** 2 * (kr_new - 1)  # new shocked pressure (Pa)
+        h5 = h2 + 0.5 * ur ** 2 * (kr_new ** 2 - 1)  # new shocked enthalpy (J/kg)
+        err_ = np.abs(kr - kr_new)  # error
+        kr = kr_new  # density ratio assignment to return the loop
+
+    Yt_ = np.log10(ro5 / 1.225)
+    Xt_ = np.log10(p5 / 1.0134e5)
+    Zt_ = Xt_ - Yt_
+    d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12 = coeff_d(Yt_,
+                                                                   Zt_)  # function to get Tannehill 'd' coefficients
+    T5 = 151.78 * 10 ** (
+            d1 + d2 * Yt_ + d3 * Zt_ + d4 * Yt_ * Zt_ + d5 * Zt_ ** 2 + (  # Tannehill temperature expression
+            d6 + d7 * Yt_ + d8 * Zt_ + d9 * Yt_ * Zt_ + d10 * Zt_ ** 2) / (1 + np.exp(d11 * (Zt_ + d12))))
+    R5 = p5 / (ro5 * T5)  # R constant for air in reflected condition (J/kgK)
+    a5 = np.sqrt(gam5 * R5 * T5)  # speed of sound in reflected condition (m/s)
+    Mr = (ur + u2) / a2  # reflected Mach number
+    S1 = np.array([p1 / 1e3, T1, ro1, h1 / 1e3, a1, gam1, us, Ms])
+    S2 = np.array([p2 / 1e3, T2, ro2, h2 / 1e3, a2, gam2, u2, M2])
+    S5 = np.array([p5 / 1e3, T5, ro5, h5 / 1e3, a5, gam5, ur, Mr])
+    return S1, S2, S5
+
+def calculo():
+    print('INPUT:')
+    p2 = float(input('p2 (kPa): '))
+    us = float(input('us (m/s): '))
+    S1, S2, S5 = T1_tunnel(p2*1e3, us)
+    S = np.array([S1, S2, S5])
+    S = S.T
+    df = pd.DataFrame(S, columns=['state 1','state 2', 'state 5'],
+        index=['p [kPa]', 'T [K]', '\u03C1 [kg/m³]', 'h [kJ/kg]', 'a [m/s]', 'gamma', 'us [m/s]', 'Ms, M2, Mr'] )
+    print('OUTPUT:')
+    print(df.round(2))
+    print('----------------------------')
+    per = input('Rodar novamente? (s/n): ')
+    print('----------------------------')
+    return per
+
+per = calculo()
+
+while per in ['s', 'sim', 'S', 'SIM', 'Sim']: per = calculo()
+
+x = input()
